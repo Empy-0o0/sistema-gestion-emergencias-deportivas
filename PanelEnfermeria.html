@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Brigada | Ergo SaniTas SpA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a6dcc;
+            --secondary: #0d3c6c;
+            --accent: #ff6b35;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --transition: all 0.3s ease;
+            --leve: #28a745;
+            --moderada: #ffc107;
+            --grave: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+            background: #0d3c6c;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .safety-streak {
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            background: white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .streak-light {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        .status-panel {
+            background: #f8fbfe;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .status-panel:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e1e8f0;
+        }
+        
+        .status-panel.active-leve:before {
+            background: var(--leve);
+        }
+        
+        .status-panel.active-moderada:before {
+            background: var(--moderada);
+        }
+        
+        .status-panel.active-grave:before {
+            background: var(--grave);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-level {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .status-available {
+            color: var(--success);
+        }
+        
+        .status-busy {
+            color: var(--moderada);
+        }
+        
+        .status-emergency {
+            color: var(--grave);
+        }
+        
+        .team-status-indicator {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-available .team-status-indicator {
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .status-busy .team-status-indicator {
+            background: var(--moderada);
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+        }
+        
+        .status-emergency .team-status-indicator {
+            background: var(--grave);
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .alert-info {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .alert-info-item {
+            margin-bottom: 12px;
+            display: flex;
+        }
+        
+        .alert-info-label {
+            font-weight: 600;
+            min-width: 140px;
+            color: var(--secondary);
+        }
+        
+        .alert-info-value {
+            flex: 1;
+        }
+        
+        .alert-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .alert-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .alert-btn {
+            padding: 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .alert-btn i {
+            font-size: 28px;
+        }
+        
+        .btn-primary {
+            background: rgba(26, 109, 204, 0.15);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(26, 109, 204, 0.25);
+        }
+        
+        .btn-success {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+        
+        .btn-success:hover {
+            background: rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn-warning {
+            background: rgba(255, 193, 7, 0.15);
+            color: var(--warning);
+            border: 2px solid var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background: rgba(255, 193, 7, 0.25);
+        }
+        
+        .btn-danger {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: rgba(220, 53, 69, 0.25);
+        }
+        
+        .status-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .status-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .status-btn {
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-available {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+        
+        .btn-available:hover {
+            background: rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn-busy {
+            background: rgba(255, 193, 7, 0.15);
+            color: var(--warning);
+            border: 2px solid var(--warning);
+        }
+        
+        .btn-busy:hover {
+            background: rgba(255, 193, 7, 0.25);
+        }
+        
+        .btn-emergency {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+        
+        .btn-emergency:hover {
+            background: rgba(220, 53, 69, 0.25);
+        }
+        
+        .map-container {
+            height: 300px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        .map-container:before {
+            content: "Mapa de Ubicación";
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            width: 90%;
+            height: 90%;
+        }
+        
+        .map-cell {
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .map-cell.active {
+            background: #ff6b35;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+        }
+        
+        .map-cell.alert {
+            background: #dc3545;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .map-cell.target {
+            background: #28a745;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .map-cell.path {
+            background: #1a6dcc;
+            color: white;
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-level {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .level-leve {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--leve);
+        }
+        
+        .level-moderada {
+            background: rgba(255, 193, 7, 0.15);
+            color: var(--moderada);
+        }
+        
+        .level-grave {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--grave);
+        }
+        
+        .history-time {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .team-info-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .team-info-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .team-info-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: var(--secondary);
+        }
+        
+        .team-info-value {
+            flex: 1;
+        }
+        
+        .equipment-list {
+            margin-top: 20px;
+        }
+        
+        .equipment-item {
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid #e1e8f0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .equipment-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-ok {
+            background: var(--success);
+        }
+        
+        .status-warning {
+            background: var(--warning);
+        }
+        
+        .status-critical {
+            background: var(--danger);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            padding: 20px;
+            font-size: 14px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes sirenPulse {
+            0% { background-color: rgba(220, 53, 69, 0.7); }
+            50% { background-color: rgba(220, 53, 69, 0.9); }
+            100% { background-color: rgba(220, 53, 69, 0.7); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-info {
+                align-self: center;
+            }
+            
+            .safety-streak {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Médica Deportiva - Ergo SaniTas SpA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.0.2/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a6dcc;
+            --secondary: #0d3c6c;
+            --accent: #ff6b35;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107; 
+            --light: #f8f9fa;
+            --dark: #212529;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .safety-streak {
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            background: white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .streak-light {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        /* Nuevos estilos para el diagrama interactivo */
+        .flow-diagram-container {
+            position: relative;
+            min-height: 500px;
+            background: #f8fbfe;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .step {
+            position: absolute;
+            width: 200px;
+            height: 70px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 10px;
+            z-index: 10;
+            font-size: 14px;
+        }
+        
+        .step:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .step.identification { top: 10px; left: 50%; transform: translateX(-50%); background: #FFEBEE; border: 2px solid #E53935; }
+        .step.activation { top: 100px; left: 50%; transform: translateX(-50%); background: #E3F2FD; border: 2px solid #1E88E5; }
+        .step.evaluation { top: 190px; left: 50%; transform: translateX(-50%); background: #E8F5E9; border: 2px solid #43A047; }
+        .step.stabilization { top: 280px; left: 50%; transform: translateX(-50%); background: #FFF8E1; border: 2px solid #FFB300; }
+        .step.record { top: 370px; left: 50%; transform: translateX(-50%); background: #F3E5F5; border: 2px solid #8E24AA; }
+        .step.notification { top: 460px; left: 50%; transform: translateX(-50%); background: #E0F7FA; border: 2px solid #00ACC1; }
+        .step.transfer { top: 550px; left: 50%; transform: translateX(-50%); background: #E8EAF6; border: 2px solid #3949AB; }
+        .step.follow-up { top: 640px; left: 50%; transform: translateX(-50%); background: #E0F2F1; border: 2px solid #00897B; }
+        .step.closure { top: 730px; left: 50%; transform: translateX(-50%); background: #FBE9E7; border: 2px solid #FF5722; }
+        
+        .connector {
+            position: absolute;
+            background: #4b86b4;
+            z-index: 5;
+        }
+        
+        .vertical-connector {
+            width: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .details-panel {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #c5d5e5;
+        }
+        
+        .details-panel.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        
+        .panel-header i {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .panel-content {
+            line-height: 1.8;
+        }
+        
+        .panel-content h3 {
+            color: var(--secondary);
+            margin: 15px 0 10px;
+        }
+        
+        .panel-content ul {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        
+        .panel-content li {
+            margin-bottom: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #f9fbfd;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 109, 204, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(26, 109, 204, 0.25);
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(26, 109, 204, 0.35);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background: #e05a2a;
+        }
+        
+        .incident-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .incident-item {
+            background: #f9fbfd;
+            border: 1px solid #e1e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+        }
+        
+        .incident-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .incident-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 18px;
+        }
+        
+        .incident-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .incident-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .incident-detail {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .incident-detail i {
+            color: var(--primary);
+        }
+        
+        .incident-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #d39e00;
+        }
+        
+        .status-in-progress {
+            background: rgba(0, 123, 255, 0.2);
+            color: #0062cc;
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #218838;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .stat-title {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .injury-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .injury-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .injury-stat-title {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .safety-indicators {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .safety-indicator {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .indicator-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .green-indicator {
+            color: var(--success);
+        }
+        
+        .yellow-indicator {
+            color: var(--warning);
+        }
+        
+        .red-indicator {
+            color: var(--danger);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            padding: 20px;
+            font-size: 14px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .injury-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .incident-details {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-info {
+                align-self: flex-end;
+            }
+            
+            .safety-streak {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .safety-indicators {
+                grid-template-columns: 1fr;
+            }
+            
+            .step {
+                width: 170px;
+                height: 80px;
+                font-size: 13px;
+            }
+            
+            .flow-diagram-container {
+                min-height: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navegación -->
+        <nav style="background: white; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <a href="index.html" style="text-decoration: none; color: var(--secondary); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition);">
+                ← Volver al Dashboard Principal
+            </a>
+        </nav>
+
+        <header>
+            <div class="logo">
+                <div class="logo-img">
+                    <i class="fas fa-plus-square fa-2x" style="color: #0d3c6c;"></i>
+                </div>
+                <h1>Ergo<span>SaniTas</span> - Perfil de Brigada</h1>
+            </div>
+            <div class="user-info">
+                <div class="avatar">MJ</div>
+                <div>
+                    <div>María Jiménez</div>
+                    <small>Brigada de Emergencia</small>
+                </div>
+            </div>
+            <div class="safety-streak">
+                <div class="streak-light"></div>
+                <div>Alertas atendidas: <strong>17</strong></div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-user-shield"></i> Estado del Brigadista</h2>
+                
+                <div class="status-panel" id="statusPanel">
+                    <div class="status-level status-available" id="statusLevel">
+                        <span class="team-status-indicator"></span>
+                        DISPONIBLE
+                    </div>
+                    <div class="status-message" id="statusMessage">
+                        Listo para responder a emergencias
+                    </div>
+                    
+                    <div class="status-controls">
+                        <button class="status-btn btn-available" id="btnAvailable">
+                            <i class="fas fa-check-circle"></i>
+                            Disponible
+                        </button>
+                        
+                        <button class="status-btn btn-busy" id="btnBusy">
+                            <i class="fas fa-user-clock"></i>
+                            Ocupado
+                        </button>
+                        
+                        <button class="status-btn btn-emergency" id="btnEmergency">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            En Emergencia
+                        </button>
+                    </div>
+                    
+                    <div class="team-info-card">
+                        <h3><i class="fas fa-info-circle"></i> Información de la Brigada</h3>
+                        <div class="team-info-item">
+                            <div class="team-info-label">Equipo:</div>
+                            <div class="team-info-value">Brigada Médica Principal</div>
+                        </div>
+                        <div class="team-info-item">
+                            <div class="team-info-label">Ubicación:</div>
+                            <div class="team-info-value">Puesto Médico Central</div>
+                        </div>
+                        <div class="team-info-item">
+                            <div class="team-info-label">Miembros:</div>
+                            <div class="team-info-value">María Jiménez, Carlos López, Ana Torres</div>
+                        </div>
+                        <div class="team-info-item">
+                            <div class="team-info-label">Radio:</div>
+                            <div class="team-info-value">Canal 3 (Emergencias)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="card-title"><i class="fas fa-bell"></i> Alertas Activas</h2>
+                
+                <div class="alert-info" id="alertInfo">
+                    <div class="alert-info-item">
+                        <div class="alert-info-label">Alerta actual:</div>
+                        <div class="alert-info-value">Ninguna alerta activa</div>
+                    </div>
+                    <div class="alert-info-item">
+                        <div class="alert-info-label">Ubicación:</div>
+                        <div class="alert-info-value">--</div>
+                    </div>
+                    <div class="alert-info-item">
+                        <div class="alert-info-label">Tiempo:</div>
+                        <div class="alert-info-value">--:--</div>
+                    </div>
+                    <div class="alert-info-item">
+                        <div class="alert-info-label">Descripción:</div>
+                        <div class="alert-info-value">Esperando asignación de alerta</div>
+                    </div>  
+                </div>
+                
+                <div class="alert-buttons">
+                    <button class="alert-btn btn-primary" id="btnConfirm">
+                        <i class="fas fa-check-double"></i>
+                        Confirmar Alerta
+                    </button>
+                    
+                    <button class="alert-btn btn-success" id="btnArrived">
+                        <i class="fas fa-location-dot"></i>
+                        Llegué al lugar
+                    </button>
+                    
+                    <button class="alert-btn btn-warning" id="btnAssistance">
+                        <i class="fas fa-handshake"></i>
+                        Solicitar Apoyo
+                    </button>
+                    
+                    <button class="alert-btn btn-danger" id="btnComplete">
+                        <i class="fas fa-flag-checkered"></i>
+                        Emergencia Resuelta
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-plus-circle"></i> Registrar Nuevo Incidente</h2>
+                <form id="incidentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="athleteName">Nombre del Deportista</label>
+                            <input type="text" id="athleteName" class="form-control" placeholder="Ej: Carlos Torres" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="athleteAge">Edad</label>
+                            <input type="number" id="athleteAge" class="form-control" placeholder="Ej: 17" min="8" max="60" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="athleteName">Club del Deportista</label>
+                            <input type="text" id="athleteName" class="form-control" placeholder="Ej: Colo Colo" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="athleteName">Categoria del Deportista</label>
+                            <input type="text" id="athleteName" class="form-control" placeholder="Ej: Sub 11" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sportType">Deporte</label>
+                            <select id="sportType" class="form-control" required>
+                                <option value="">Seleccionar deporte</option>
+                                <option value="futbol">Fútbol</option>
+                                <option value="voleibol">Voleibol</option>
+                                <option value="baloncesto">Baloncesto</option>
+                                <option value="atletismo">Atletismo</option>
+                                <option value="tenis">Tenis</option>
+                                <option value="rugby">Rugby</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="incidentType">Tipo de Lesión</label>
+                            <select id="incidentType" class="form-control" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="fractura">Fractura</option>
+                                <option value="esguince">Esguince</option>
+                                <option value="contusion">Contusión</option>
+                                <option value="desgarro">Desgarro muscular</option>
+                                <option value="tendinitis">Tendinitis</option>
+                                <option value="conmocion">Conmoción cerebral</option>
+                                <option value="laceracion">Laceración</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="incidentDate">Fecha y Hora del Incidente</label>
+                            <input type="datetime-local" id="incidentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="incidentLocation">Ubicación</label>
+                            <input type="text" id="incidentLocation" class="form-control" placeholder="Ej: Cancha Principal, Campo de Fútbol" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bodyPart">Parte del Cuerpo Afectada</label>
+                        <select id="bodyPart" class="form-control" required>
+                            <option value="">Seleccionar parte del cuerpo</option>
+                            <option value="tobillo">Tobillo</option>
+                            <option value="rodilla">Rodilla</option>
+                            <option value="muslo">Muslo</option>
+                            <option value="pierna">Pierna</option>
+                            <option value="hombro">Hombro</option>
+                            <option value="brazo">Brazo</option>
+                            <option value="cabeza">Cabeza/Cuello</option>
+                            <option value="torso">Torso</option>
+                            <option value="otra">Otra</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="incidentDescription">Descripción del Incidente</label>
+                            <textarea id="incidentDescription" class="form-control" rows="3" placeholder="Describa en detalle lo ocurrido, síntomas observados..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstAid">Primeros Auxilios Aplicados</label>
+                            <textarea id="firstAid" class="form-control" rows="3" placeholder="Describa los primeros auxilios aplicados..." required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="severity">Gravedad</label>
+                            <select id="severity" class="form-control" required>
+                                <option value="leve">Leve (sin tiempo fuera)</option>
+                                <option value="moderada">Moderada (1-7 días fuera)</option>
+                                <option value="grave">Grave (8-28 días fuera)</option>
+                                <option value="critica">Crítica (más de 28 días fuera)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Estado</label>
+                            <select id="status" class="form-control" required>
+                                <option value="pendiente">Pendiente de evaluación</option>
+                                <option value="progreso">En tratamiento</option>
+                                <option value="completado">Recuperado</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-accent btn-block">
+                        <i class="fas fa-save"></i> Registrar Incidente
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+    
+    <footer>
+        <p>Ergo SaniTas SpA - Servicios de Medicina Deportiva &copy; 2025</p>
+        <p>San Bernardo, Santiago, Chile | Tel: +56 9 6114 9975</p>
+        <p>www.ergosanitas.com</p>
+    </footer>
+
+    <!-- Incluir módulo compartido -->
+    <script src="shared.js"></script>
+    
+    <script>
+        // Estado del brigadista
+        let currentStatus = 'available';
+        let currentAlert = null;
+        let alertTimer = null;
+        let alertStartTime = null;
+        
+        // Elementos del DOM
+        const statusPanel = document.getElementById('statusPanel');
+        const statusLevel = document.getElementById('statusLevel');
+        const statusMessage = document.getElementById('statusMessage');
+        const alertInfo = document.getElementById('alertInfo');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (typeof SharedModule === 'undefined') {
+                    console.error('SharedModule no disponible');
+                    return;
+                }
+
+                // Event listeners para botones de estado
+                document.getElementById('btnAvailable').addEventListener('click', () => setStatus('available'));
+                document.getElementById('btnBusy').addEventListener('click', () => setStatus('busy'));
+                document.getElementById('btnEmergency').addEventListener('click', () => setStatus('emergency'));
+                
+                // Event listeners para botones de alerta
+                document.getElementById('btnConfirm').addEventListener('click', confirmAlert);
+                document.getElementById('btnArrived').addEventListener('click', markArrived);
+                document.getElementById('btnAssistance').addEventListener('click', requestAssistance);
+                document.getElementById('btnComplete').addEventListener('click', completeAlert);
+                
+                // Registrar listener para alertas del SharedModule
+                SharedModule.registerAlertListener(handleIncomingAlert);
+                
+                // Verificar estado inicial
+                updateStatusUI();
+                checkExistingAlert();
+                
+                console.log('Panel de Enfermería inicializado correctamente');
+            } catch (error) {
+                console.error('Error inicializando Panel de Enfermería:', error);
+            }
+        });
+
+        // Manejar alertas entrantes del SharedModule
+        function handleIncomingAlert(alertEvent) {
+            try {
+                console.log('🚨 Alerta recibida en Panel de Enfermería:', alertEvent);
+                
+                if (alertEvent.type === 'set' && alertEvent.data) {
+                    // Nueva alerta recibida
+                    currentAlert = {
+                        ...alertEvent.data,
+                        confirmed: false,
+                        arrived: false,
+                        startTime: new Date(alertEvent.data.timestamp)
+                    };
+                    
+                    alertStartTime = currentAlert.startTime;
+                    updateAlertUI(currentAlert);
+                    startTimer();
+                    
+                    // Cambiar estado según nivel de alerta y activar protocolos
+                    if (currentAlert.level === 'grave') {
+                        setStatus('emergency');
+                        // Activar sonido de alerta para emergencias graves
+                        playAlertSound();
+                        // Activar protocolo de emergencia grave
+                        activateEmergencyProtocol(currentAlert);
+                    } else if (currentAlert.level === 'moderada') {
+                        setStatus('busy');
+                        // Activar protocolo de emergencia moderada
+                        activateModerateProtocol(currentAlert);
+                    } else {
+                        setStatus('busy'); // Para alertas leves también cambiar a ocupado
+                        // Activar protocolo de emergencia leve
+                        activateMildProtocol(currentAlert);
+                    }
+                    
+                    // Actualizar mapa
+                    updateMapForAlert(currentAlert.location);
+                    
+                    // Mostrar notificación prominente
+                    showNotification(`🚨 NUEVA ALERTA ${currentAlert.level.toUpperCase()}: ${currentAlert.type}`, 'warning');
+                    
+                    // Enviar confirmación automática de recepción al Panel de Brigada
+                    sendReceptionConfirmation(currentAlert);
+                    
+                } else if (alertEvent.type === 'clear') {
+                    // Alerta cancelada
+                    if (currentAlert) {
+                        clearCurrentAlert();
+                        showNotification('Alerta cancelada por el coordinador', 'info');
+                    }
+                } else if (alertEvent.type === 'update') {
+                    // Alerta actualizada
+                    if (currentAlert && alertEvent.data) {
+                        currentAlert = { ...currentAlert, ...alertEvent.data };
+                        updateAlertUI(currentAlert);
+                        showNotification('Información de alerta actualizada', 'info');
+                    }
+                }
+            } catch (error) {
+                console.error('Error manejando alerta entrante:', error);
+            }
+        }
+
+        // Enviar confirmación de recepción al Panel de Brigada
+        function sendReceptionConfirmation(alertData) {
+            try {
+                SharedModule.updateAlert({
+                    receivedBy: 'María Jiménez - Brigada de Emergencia',
+                    receivedAt: new Date().toISOString(),
+                    receptionConfirmed: true,
+                    nurseStatus: currentStatus,
+                    nurseLocation: 'Puesto Médico Central'
+                });
+                console.log('✅ Confirmación de recepción enviada al Panel de Brigada');
+            } catch (error) {
+                console.error('Error enviando confirmación:', error);
+            }
+        }
+
+        // Activar protocolo de emergencia grave
+        function activateEmergencyProtocol(alertData) {
+            console.log('🔴 PROTOCOLO DE EMERGENCIA GRAVE ACTIVADO');
+            
+            // Cambiar el panel visual para emergencia grave
+            statusPanel.style.border = '3px solid var(--grave)';
+            statusPanel.style.animation = 'pulse 1.5s infinite';
+            
+            // Preparar equipo de emergencia
+            showNotification('Protocolo de emergencia grave activado. Preparando equipo médico.', 'error');
+            
+            // Simular preparación de equipo
+            setTimeout(() => {
+                showNotification('Equipo médico preparado. Proceda inmediatamente al lugar.', 'warning');
+            }, 2000);
+        }
+
+        // Activar protocolo de emergencia moderada
+        function activateModerateProtocol(alertData) {
+            console.log('🟡 PROTOCOLO DE EMERGENCIA MODERADA ACTIVADO');
+            
+            statusPanel.style.border = '2px solid var(--moderada)';
+            showNotification('Protocolo de emergencia moderada activado. Preparando material médico.', 'warning');
+        }
+
+        // Activar protocolo de emergencia leve
+        function activateMildProtocol(alertData) {
+            console.log('🟢 PROTOCOLO DE EMERGENCIA LEVE ACTIVADO');
+            
+            statusPanel.style.border = '1px solid var(--leve)';
+            showNotification('Protocolo de emergencia leve activado. Preparando primeros auxilios.', 'success');
+        }
+
+        // Reproducir sonido de alerta
+        function playAlertSound() {
+            try {
+                // Crear contexto de audio para generar sonido de alerta médica
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Sonido de alerta médica (dos tonos alternados)
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.3);
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.6);
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 1);
+                
+            } catch (error) {
+                console.log('Audio no disponible:', error);
+            }
+        }
+
+        // Verificar alerta existente al cargar
+        function checkExistingAlert() {
+            try {
+                const existingAlert = SharedModule.getAlert();
+                if (existingAlert) {
+                    currentAlert = {
+                        ...existingAlert,
+                        confirmed: false,
+                        arrived: false,
+                        startTime: new Date(existingAlert.timestamp)
+                    };
+                    
+                    alertStartTime = currentAlert.startTime;
+                    updateAlertUI(currentAlert);
+                    startTimer();
+                    
+                    if (currentAlert.level === 'grave') {
+                        setStatus('emergency');
+                    } else if (currentAlert.level === 'moderada') {
+                        setStatus('busy');
+                    }
+                    
+                    updateMapForAlert(currentAlert.location);
+                }
+            } catch (error) {
+                console.error('Error verificando alerta existente:', error);
+            }
+        }
+
+        // Actualizar UI de alerta
+        function updateAlertUI(alert) {
+            const levelColor = alert.level === 'leve' ? 'var(--leve)' : 
+                             alert.level === 'moderada' ? 'var(--moderada)' : 'var(--grave)';
+            
+            const clubInfo = alert.relatedClub ? 
+                `<div class="alert-info-item">
+                    <div class="alert-info-label">Club afectado:</div>
+                    <div class="alert-info-value">${alert.relatedClub.name} (${alert.relatedClub.category})</div>
+                </div>` : '';
+            
+            alertInfo.innerHTML = `
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Alerta actual:</div>
+                    <div class="alert-info-value" style="text-transform: uppercase; font-weight: 600; color: ${levelColor}">${alert.level}</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Ubicación:</div>
+                    <div class="alert-info-value">${alert.location}</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Tiempo:</div>
+                    <div class="alert-info-value" id="alertTimer">00:00</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Descripción:</div>
+                    <div class="alert-info-value">${alert.type}</div>
+                </div>
+                ${clubInfo}
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Prioridad:</div>
+                    <div class="alert-info-value">${alert.priority || 'NORMAL'}</div>
+                </div>
+            `;
+        }
+
+        // Limpiar alerta actual
+        function clearCurrentAlert() {
+            currentAlert = null;
+            clearInterval(alertTimer);
+            alertStartTime = null;
+            
+            alertInfo.innerHTML = `
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Alerta actual:</div>
+                    <div class="alert-info-value">Ninguna alerta activa</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Ubicación:</div>
+                    <div class="alert-info-value">--</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Tiempo:</div>
+                    <div class="alert-info-value">--:--</div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-label">Descripción:</div>
+                    <div class="alert-info-value">Esperando asignación de alerta</div>
+                </div>
+            `;
+            
+            // Resetear mapa
+            const cells = document.querySelectorAll('.map-cell');
+            cells.forEach(cell => {
+                cell.classList.remove('alert', 'target', 'path');
+                if (cell.textContent === 'Puesto Médico') {
+                    cell.classList.add('path');
+                }
+            });
+            
+            setStatus('available');
+        }
+
+        // Mostrar notificación
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 10000;
+                background: ${type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#1a6dcc'};
+                color: ${type === 'warning' ? '#000' : '#fff'};
+                padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                font-family: 'Segoe UI', sans-serif; font-weight: 600; max-width: 300px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+        
+        // Cambiar estado del brigadista
+        function setStatus(status) {
+            try {
+                currentStatus = status;
+                SharedModule.setStatus(status, { 
+                    location: 'Puesto Médico',
+                    name: 'María Jiménez',
+                    role: 'Brigada de Emergencia'
+                });
+                updateStatusUI();
+            } catch (error) {
+                console.error('Error actualizando estado:', error);
+            }
+        }
+        
+        // Actualizar UI según el estado
+        function updateStatusUI() {
+            statusPanel.classList.remove('active-leve', 'active-moderada', 'active-grave');
+            statusLevel.classList.remove('status-available', 'status-busy', 'status-emergency');
+            
+            switch(currentStatus) {
+                case 'available':
+                    statusPanel.classList.add('active-leve');
+                    statusLevel.classList.add('status-available');
+                    statusLevel.innerHTML = '<span class="team-status-indicator"></span> DISPONIBLE';
+                    statusMessage.textContent = 'Listo para responder a emergencias';
+                    break;
+                case 'busy':
+                    statusPanel.classList.add('active-moderada');
+                    statusLevel.classList.add('status-busy');
+                    statusLevel.innerHTML = '<span class="team-status-indicator"></span> OCUPADO';
+                    statusMessage.textContent = 'Atendiendo una emergencia menor';
+                    break;
+                case 'emergency':
+                    statusPanel.classList.add('active-grave');
+                    statusLevel.classList.add('status-emergency');
+                    statusLevel.innerHTML = '<span class="team-status-indicator"></span> EN EMERGENCIA';
+                    statusMessage.textContent = 'Atendiendo una emergencia grave';
+                    break;
+            }
+        }
+        
+        // Iniciar temporizador de alerta
+        function startTimer() {
+            if (alertTimer) clearInterval(alertTimer);
+            
+            alertTimer = setInterval(() => {
+                if (!alertStartTime) return;
+                
+                const elapsed = SharedModule.formatElapsedTime(alertStartTime.getTime());
+                const timerEl = document.getElementById('alertTimer');
+                if (timerEl) {
+                    timerEl.textContent = elapsed;
+                    
+                    // Cambiar color según tiempo transcurrido
+                    const minutes = parseInt(elapsed.split(':')[0]);
+                    timerEl.style.color = minutes >= 10 ? 'var(--danger)' : minutes >= 5 ? 'var(--warning)' : 'inherit';
+                }
+            }, 1000);
+        }
+        
+        // Actualizar mapa para la alerta
+        function updateMapForAlert(location) {
+            const cells = document.querySelectorAll('.map-cell');
+            cells.forEach(cell => {
+                cell.classList.remove('alert', 'target', 'path');
+                
+                if (location && cell.textContent.includes(location.split(' - ')[0])) {
+                    cell.classList.add('alert');
+                }
+                
+                if (cell.textContent === 'Puesto Médico') {
+                    cell.classList.add('path');
+                }
+            });
+        }
+        
+        // Confirmar recepción de alerta
+        function confirmAlert() {
+            if (!currentAlert) {
+                showNotification('No hay alertas activas para confirmar', 'error');
+                return;
+            }
+            
+            if (currentAlert.confirmed) {
+                showNotification('Esta alerta ya ha sido confirmada', 'warning');
+                return;
+            }
+            
+            currentAlert.confirmed = true;
+            showNotification(`Alerta confirmada. Diríjase a ${currentAlert.location}`, 'success');
+            
+            // Actualizar estado en SharedModule si es necesario
+            try {
+                SharedModule.updateAlert({ 
+                    confirmed: true, 
+                    confirmedAt: new Date().toISOString(),
+                    healthStaffEnRoute: true
+                });
+            } catch (error) {
+                console.error('Error actualizando alerta:', error);
+            }
+        }
+        
+        // Marcar llegada al lugar
+        function markArrived() {
+            if (!currentAlert) {
+                showNotification('No hay alertas activas', 'error');
+                return;
+            }
+            
+            if (!currentAlert.confirmed) {
+                showNotification('Por favor confirme la alerta primero', 'warning');
+                return;
+            }
+            
+            if (currentAlert.arrived) {
+                showNotification('Ya marcó su llegada anteriormente', 'warning');
+                return;
+            }
+            
+            currentAlert.arrived = true;
+            showNotification(`Llegada registrada en ${currentAlert.location}. Proceda con la atención.`, 'success');
+            
+            try {
+                SharedModule.updateAlert({ arrived: true, arrivedAt: new Date().toISOString() });
+            } catch (error) {
+                console.error('Error actualizando alerta:', error);
+            }
+        }
+        
+        // Solicitar apoyo adicional
+        function requestAssistance() {
+            if (!currentAlert) {
+                showNotification('No hay alertas activas', 'error');
+                return;
+            }
+            
+            showNotification('Solicitud de apoyo adicional enviada. Refuerzos en camino.', 'success');
+            
+            try {
+                SharedModule.updateAlert({ 
+                    assistanceRequested: true, 
+                    assistanceRequestedAt: new Date().toISOString() 
+                });
+            } catch (error) {
+                console.error('Error actualizando alerta:', error);
+            }
+        }
+        
+        // Completar la alerta
+        function completeAlert() {
+            if (!currentAlert) {
+                showNotification('No hay alertas activas', 'error');
+                return;
+            }
+            
+            if (!currentAlert.confirmed) {
+                showNotification('Por favor confirme la alerta primero', 'warning');
+                return;
+            }
+            
+            if (!currentAlert.arrived) {
+                showNotification('Por favor marque su llegada primero', 'warning');
+                return;
+            }
+            
+            // Añadir al historial
+            addToHistory(currentAlert);
+            
+            // Agregar al historial del SharedModule
+            try {
+                SharedModule.addIncident({
+                    athleteName: 'Deportista',
+                    athleteAge: 17,
+                    sportType: 'futbol',
+                    incidentType: currentAlert.type,
+                    incidentDate: currentAlert.startTime.toISOString(),
+                    incidentLocation: currentAlert.location,
+                    bodyPart: 'tobillo',
+                    incidentDescription: currentAlert.type,
+                    firstAid: 'Primeros auxilios aplicados según protocolo',
+                    severity: currentAlert.level,
+                    status: 'completado',
+                    completedBy: 'María Jiménez - Brigada de Emergencia',
+                    completedAt: new Date().toISOString()
+                });
+            } catch (error) {
+                console.error('Error agregando incidente al historial:', error);
+            }
+            
+            // Limpiar alerta actual
+            clearCurrentAlert();
+            
+            showNotification('Emergencia marcada como resuelta. ¡Buen trabajo!', 'success');
+        }
+
+        // Añadir al historial local
+        function addToHistory(alert) {
+            const historyList = document.getElementById('historyList');
+            if (!historyList) return;
+            
+            const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <div class="history-level level-${alert.level}">${alert.level.charAt(0).toUpperCase() + alert.level.slice(1)}</div>
+                <div>${alert.location} - ${alert.type}</div>
+                <div class="history-time">Hoy, ${timeString}</div>
+            `;
+            
+            historyList.insertBefore(historyItem, historyList.firstChild);
+            
+            // Mantener solo los últimos 10 elementos
+            const items = historyList.querySelectorAll('.history-item');
+            if (items.length > 10) {
+                historyList.removeChild(items[items.length - 1]);
+            }
+        }
+
+        // Manejar envío del formulario de incidentes
+        document.addEventListener('DOMContentLoaded', function() {
+            const incidentForm = document.getElementById('incidentForm');
+            if (incidentForm) {
+                incidentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        // Recopilar datos del formulario
+                        const formData = new FormData(this);
+                        const incidentData = {
+                            athleteName: document.getElementById('athleteName').value,
+                            athleteAge: parseInt(document.getElementById('athleteAge').value),
+                            sportType: document.getElementById('sportType').value,
+                            incidentType: document.getElementById('incidentType').value,
+                            incidentDate: document.getElementById('incidentDate').value,
+                            incidentLocation: document.getElementById('incidentLocation').value,
+                            bodyPart: document.getElementById('bodyPart').value,
+                            incidentDescription: document.getElementById('incidentDescription').value,
+                            firstAid: document.getElementById('firstAid').value,
+                            severity: document.getElementById('severity').value,
+                            status: document.getElementById('status').value
+                        };
+                        
+                        // Agregar al SharedModule
+                        SharedModule.addIncident(incidentData);
+                        
+                        showNotification('¡Incidente registrado correctamente!', 'success');
+                        
+                        // Resetear formulario
+                        this.reset();
+                        
+                        // Establecer fecha y hora actual
+                        const now = new Date();
+                        const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                        document.getElementById('incidentDate').value = localDateTime;
+                        
+                    } catch (error) {
+                        console.error('Error registrando incidente:', error);
+                        showNotification('Error al registrar el incidente', 'error');
+                    }
+                });
+                
+                // Establecer fecha y hora actual por defecto
+                const now = new Date();
+                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                const dateInput = document.getElementById('incidentDate');
+                if (dateInput) {
+                    dateInput.value = localDateTime;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
