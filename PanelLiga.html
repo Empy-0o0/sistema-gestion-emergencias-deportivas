@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Médica Deportiva - Ergo SaniTas SpA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.0.2/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a6dcc;
+            --secondary: #0d3c6c;
+            --accent: #ff6b35;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107; 
+            --light: #f8f9fa;
+            --dark: #212529;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .safety-streak {
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            background: white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .streak-light {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        /* Nuevos estilos para el diagrama interactivo */
+        .flow-diagram-container {
+            position: relative;
+            min-height: 500px;
+            background: #f8fbfe;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .step {
+            position: absolute;
+            width: 200px;
+            height: 70px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 10px;
+            z-index: 10;
+            font-size: 14px;
+        }
+        
+        .step:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .step.identification { top: 10px; left: 50%; transform: translateX(-50%); background: #FFEBEE; border: 2px solid #E53935; }
+        .step.activation { top: 100px; left: 50%; transform: translateX(-50%); background: #E3F2FD; border: 2px solid #1E88E5; }
+        .step.evaluation { top: 190px; left: 50%; transform: translateX(-50%); background: #E8F5E9; border: 2px solid #43A047; }
+        .step.stabilization { top: 280px; left: 50%; transform: translateX(-50%); background: #FFF8E1; border: 2px solid #FFB300; }
+        .step.record { top: 370px; left: 50%; transform: translateX(-50%); background: #F3E5F5; border: 2px solid #8E24AA; }
+        .step.notification { top: 460px; left: 50%; transform: translateX(-50%); background: #E0F7FA; border: 2px solid #00ACC1; }
+        .step.transfer { top: 550px; left: 50%; transform: translateX(-50%); background: #E8EAF6; border: 2px solid #3949AB; }
+        .step.follow-up { top: 640px; left: 50%; transform: translateX(-50%); background: #E0F2F1; border: 2px solid #00897B; }
+        .step.closure { top: 730px; left: 50%; transform: translateX(-50%); background: #FBE9E7; border: 2px solid #FF5722; }
+        
+        .connector {
+            position: absolute;
+            background: #4b86b4;
+            z-index: 5;
+        }
+        
+        .vertical-connector {
+            width: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .details-panel {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #c5d5e5;
+        }
+        
+        .details-panel.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        
+        .panel-header i {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .panel-content {
+            line-height: 1.8;
+        }
+        
+        .panel-content h3 {
+            color: var(--secondary);
+            margin: 15px 0 10px;
+        }
+        
+        .panel-content ul {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        
+        .panel-content li {
+            margin-bottom: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #f9fbfd;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 109, 204, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(26, 109, 204, 0.25);
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(26, 109, 204, 0.35);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background: #e05a2a;
+        }
+        
+        .incident-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .incident-item {
+            background: #f9fbfd;
+            border: 1px solid #e1e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+        }
+        
+        .incident-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .incident-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 18px;
+        }
+        
+        .incident-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .incident-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .incident-detail {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .incident-detail i {
+            color: var(--primary);
+        }
+        
+        .incident-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #d39e00;
+        }
+        
+        .status-in-progress {
+            background: rgba(0, 123, 255, 0.2);
+            color: #0062cc;
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #218838;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .stat-title {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .injury-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .injury-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .injury-stat-title {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .safety-indicators {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .safety-indicator {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .indicator-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .green-indicator {
+            color: var(--success);
+        }
+        
+        .yellow-indicator {
+            color: var(--warning);
+        }
+        
+        .red-indicator {
+            color: var(--danger);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            padding: 20px;
+            font-size: 14px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .injury-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .incident-details {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-info {
+                align-self: flex-end;
+            }
+            
+            .safety-streak {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .safety-indicators {
+                grid-template-columns: 1fr;
+            }
+            
+            .step {
+                width: 170px;
+                height: 80px;
+                font-size: 13px;
+            }
+            
+            .flow-diagram-container {
+                min-height: 800px;
+            }
+        }
+    </style>
+</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Alerta de Emergencia | Ergo SaniTas SpA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a6dcc;
+            --secondary: #0d3c6c;
+            --accent: #ff6b35;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --transition: all 0.3s ease;
+            --leve: #28a745;
+            --moderada: #ffc107;
+            --grave: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+            background: #0d3c6c;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .safety-streak {
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            background: white;
+            border-radius: 50px;
+            padding: 10px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        
+        .streak-light {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        .alert-panel {
+            background: #f8fbfe;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .alert-panel:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e1e8f0;
+        }
+        
+        .alert-panel.active-leve:before {
+            background: var(--leve);
+        }
+        
+        .alert-panel.active-moderada:before {
+            background: var(--moderada);
+        }
+        
+        .alert-panel.active-grave:before {
+            background: var(--grave);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .alert-level {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .alert-leve {
+            color: var(--leve);
+        }
+        
+        .alert-moderada {
+            color: var(--moderada);
+        }
+        
+        .alert-grave {
+            color: var(--grave);
+        }
+        
+        .alert-timer {
+            font-size: 18px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        
+        .alert-location {
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .alert-location i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .alert-message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .alert-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .alert-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .alert-btn {
+            padding: 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .alert-btn i {
+            font-size: 28px;
+        }
+        
+        .btn-leve {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--leve);
+            border: 2px solid var(--leve);
+        }
+        
+        .btn-leve:hover {
+            background: rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn-moderada {
+            background: rgba(255, 193, 7, 0.15);
+            color: var(--moderada);
+            border: 2px solid var(--moderada);
+        }
+        
+        .btn-moderada:hover {
+            background: rgba(255, 193, 7, 0.25);
+        }
+        
+        .btn-grave {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--grave);
+            border: 2px solid var(--grave);
+        }
+        
+        .btn-grave:hover {
+            background: rgba(220, 53, 69, 0.25);
+        }
+        
+        .btn-cancel {
+            background: rgba(13, 60, 108, 0.1);
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            grid-column: span 3;
+            padding: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .btn-cancel {
+                grid-column: span 1;
+            }
+        }
+        
+        .btn-cancel:hover {
+            background: rgba(13, 60, 108, 0.2);
+        }
+        
+        .alert-history {
+            margin-top: 30px;
+        }
+        
+        .history-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .history-title i {
+            color: var(--primary);
+        }
+        
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-level {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .level-leve {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--leve);
+        }
+        
+        .level-moderada {
+            background: rgba(255, 193, 7, 0.15);
+            color: var(--moderada);
+        }
+        
+        .level-grave {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--grave);
+        }
+        
+        .history-time {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .siren {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(220, 53, 69, 0.7);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: sirenPulse 1s infinite;
+        }
+        
+        .siren-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 500px;
+        }
+        
+        .siren-icon {
+            font-size: 80px;
+            color: var(--grave);
+            margin-bottom: 20px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .siren-title {
+            font-size: 32px;
+            color: var(--grave);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .siren-message {
+            font-size: 20px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .siren-btn {
+            padding: 15px 30px;
+            background: var(--grave);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .siren-btn:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .map-container {
+            height: 300px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        .map-container:before {
+            content: "Mapa de Ubicación en Tiempo Real";
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            width: 90%;
+            height: 90%;
+        }
+        
+        .map-cell {
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .map-cell.active {
+            background: #ff6b35;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+        }
+        
+        .team-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .team-item {
+            padding: 15px;
+            border: 1px solid #e1e8f0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .team-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .team-status {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #6c757d;
+        }
+        
+        .status-available {
+            background: var(--success);
+        }
+        
+        .status-busy {
+            background: var(--warning);
+        }
+        
+        .status-emergency {
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .team-info {
+            flex: 1;
+        }
+        
+        .team-name {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .team-location {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            padding: 20px;
+            font-size: 14px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes sirenPulse {
+            0% { background-color: rgba(220, 53, 69, 0.7); }
+            50% { background-color: rgba(220, 53, 69, 0.9); }
+            100% { background-color: rgba(220, 53, 69, 0.7); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-info {
+                align-self: center;
+            }
+            
+            .safety-streak {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navegación -->
+        <nav style="background: white; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <a href="index.html" style="text-decoration: none; color: var(--secondary); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition);">
+                ← Volver al Dashboard Principal
+            </a>
+        </nav>
+
+        <header>
+            <div class="logo">
+                <div class="logo-img">
+                    <i class="fas fa-plus-square fa-2x" style="color: #0d3c6c;"></i>
+                </div>
+                <h1>Ergo<span>SaniTas</span> - Gestión Emergencia Deportiva</h1>
+            </div>
+            <div class="user-info">
+                <div class="avatar">ST</div>
+                <div>
+                    <div>Samuel Toro Fuentes</div>
+                    <small>Coordinador de Emergencias</small>
+                </div>
+            </div>
+            <div class="safety-streak">
+                <div class="streak-light"></div>
+                <div>Días sin lesiones: <strong>42 días</strong></div>
+            </div>
+        </header>
+         <div class="safety-indicators">
+                    <div class="safety-indicator">
+                        <i class="fas fa-heartbeat fa-2x" style="color: var(--danger);"></i>
+                        <div class="indicator-value green-indicator">42</div>
+                        <div class="stat-title">Días sin lesiones graves</div>
+                    </div>
+                    <div class="safety-indicator">
+                        <i class="fas fa-procedures fa-2x" style="color: var(--warning);"></i>
+                        <div class="indicator-value yellow-indicator">18</div>
+                        <div class="stat-title">Días sin lesiones moderadas</div>
+                    </div>
+                    <div class="safety-indicator">
+                        <i class="fas fa-user-injured fa-2x" style="color: var(--success);"></i>
+                        <div class="indicator-value red-indicator">3</div>
+                        <div class="stat-title">Días sin lesiones leves</div>
+                    </div>
+                </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-project-diagram"></i> Protocolo de Gestión de Incidentes</h2>
+                
+                <!-- Diagrama de flujo interactivo integrado -->
+                <div class="flow-diagram-container">
+                    <div class="diagram-container">
+                        <!-- Pasos del diagrama -->
+                        <div class="step identification" data-step="A">
+                            <i class="fas fa-search"></i> Identificación de Emergencia
+                        </div>
+                        
+                        <div class="step activation" data-step="B">
+                            <i class="fas fa-bell"></i> Activación de Protocolos
+                        </div>
+                        
+                        <div class="step evaluation" data-step="C">
+                            <i class="fas fa-first-aid"></i> Evaluación Inicial y Primeros Auxilios
+                        </div>
+                        
+                        <div class="step stabilization" data-step="D">
+                            <i class="fas fa-user-shield"></i> Estabilización del Deportista
+                        </div>
+                        
+                        <div class="step record" data-step="E">
+                            <i class="fas fa-clipboard-list"></i> Registro de Datos del Incidente
+                        </div>
+                        
+                        <div class="step notification" data-step="F">
+                            <i class="fas fa-phone-alt"></i> Notificación a Padres/Tutores
+                        </div>
+                        
+                        <div class="step transfer" data-step="G">
+                            <i class="fas fa-ambulance"></i> Traslado si es Necesario
+                        </div>
+                        
+                        <div class="step follow-up" data-step="H">
+                            <i class="fas fa-heartbeat"></i> Seguimiento y Rehabilitación
+                        </div>
+                        
+                        <div class="step closure" data-step="I">
+                            <i class="fas fa-check-circle"></i> Cierre del Incidente
+                        </div>
+                        
+                        <!-- Conectores -->
+                        <div class="connector vertical-connector" style="top: 70px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 160px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 250px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 340px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 430px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 520px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 610px; height: 30px;"></div>
+                        <div class="connector vertical-connector" style="top: 700px; height: 30px;"></div>
+                    </div>
+                </div>
+                
+                <!-- Panel de detalles del diagrama -->
+                <div class="details-panel" id="detailsPanel">
+                    <div class="panel-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2 id="panelTitle">Detalles del Paso</h2>
+                    </div>
+                    <div class="panel-content" id="panelContent">
+                        <p>Seleccione un paso del protocolo para ver los detalles.</p>
+                    </div>
+                </div>
+                
+               
+                
+                <h2 class="card-title" style="margin-top: 25px;"><i class="fas fa-chart-pie"></i> Estadísticas de Lesiones</h2>
+                <div class="injury-stats">
+                    <div class="injury-stat-card">
+                        <div class="injury-stat-title"><i class="fas fa-futbol"></i> Lesiones por Deporte</div>
+                        <div class="chart-container">
+                            <canvas id="sportInjuryChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="injury-stat-card">
+                        <div class="injury-stat-title"><i class="fas fa-bone"></i> Lesiones por Tipo</div>
+                        <div class="chart-container">
+                            <canvas id="typeInjuryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-users"></i> Brigada de Emergencia</h2>
+                
+                <div class="team-list">
+                    <div class="team-item">
+                        <div class="team-status status-available"></div>
+                        <div class="team-info">
+                            <div class="team-name">Enfermero Principal</div>
+                            <div class="team-location">Puesto Médico</div>
+                        </div>
+                        <div class="team-radio">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="team-item">
+                        <div class="team-status status-available"></div>
+                        <div class="team-info">
+                            <div class="team-name">Escuela Los Halcones</div>
+                            <div class="team-location">Cancha 1</div>
+                        </div>
+                        <div class="team-radio">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="team-item">
+                        <div class="team-status status-available"></div>
+                        <div class="team-info">
+                            <div class="team-name">Escuela Águilas Doradas</div>
+                            <div class="team-location">Cancha 2</div>
+                        </div>
+                        <div class="team-radio">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="team-item">
+                        <div class="team-status status-available"></div>
+                        <div class="team-info">
+                            <div class="team-name">Escuela Tormenta FC</div>
+                            <div class="team-location">Cancha 3</div>
+                        </div>
+                        <div class="team-radio">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="team-item">
+                        <div class="team-status status-available"></div>
+                        <div class="team-info">
+                            <div class="team-name">Escuela Estrellas Rojas</div>
+                            <div class="team-location">Cancha 4</div>
+                        </div>
+                        <div class="team-radio">
+                            <i class="fas fa-walkie-talkie"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="card-title" style="margin-top: 30px;"><i class="fas fa-walkie-talkie"></i> Protocolo de Comunicación</h2>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="color: var(--secondary); margin-bottom: 15px;">Instrucciones para la Brigada:</h3>
+                    <ul style="padding-left: 25px; margin-bottom: 15px;">
+                        <li>Al activar una alerta grave, todos los miembros recibirán notificación</li>
+                        <li>El enfermero debe acudir inmediatamente a la ubicación reportada</li>
+                        <li>Las escuelas en canchas adyacentes deben contener al público</li>
+                        <li>Un miembro debe preparar la camilla de rescate</li>
+                        <li>Otro miembro debe contactar a servicios de emergencia externos</li>
+                    </ul>
+                    
+                    <p><strong>Lema:</strong> "Rapidez y coordinación salvan vidas"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-history"></i> Incidentes Recientes</h2>
+            <div class="incident-list">
+                <div class="incident-item">
+                    <div>
+                        <div class="incident-header">
+                            <div class="incident-title">Fractura de tibia durante partido</div>
+                            <div class="incident-date">24 Jun 2023 - 15:42</div>
+                        </div>
+                        <div class="incident-details">
+                            <div class="incident-detail">
+                                <i class="fas fa-user"></i>
+                                <span>Carlos Torres (17 años)</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-futbol"></i>
+                                <span>Fútbol</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-bone"></i>
+                                <span>Fractura - Pierna</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Gravedad: Grave</span>
+                            </div>
+                        </div>
+                        <p><strong>Descripción:</strong> Caída tras entrada fuerte, dolor intenso en pierna derecha, inflamación inmediata. Inmovilización con férula neumática.</p>
+                        <p><strong>Primeros Auxilios:</strong> Inmovilización, aplicación de hielo, elevación de la extremidad, analgésicos.</p>
+                    </div>
+                    <div>
+                        <div class="incident-status status-in-progress">En tratamiento</div>
+                    </div>
+                </div>
+                
+                <div class="incident-item">
+                    <div>
+                        <div class="incident-header">
+                            <div class="incident-title">Esguince de tobillo grado II</div>
+                            <div class="incident-date">22 Jun 2023 - 10:15</div>
+                        </div>
+                        <div class="incident-details">
+                            <div class="incident-detail">
+                                <i class="fas fa-user"></i>
+                                <span>María López (19 años)</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-volleyball-ball"></i>
+                                <span>Voleibol</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-bone"></i>
+                                <span>Esguince - Tobillo</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Gravedad: Leve</span>
+                            </div>
+                        </div>
+                        <p><strong>Descripción:</strong> Aterrizaje incorrecto tras salto para remate, dolor e inflamación moderada en tobillo izquierdo.</p>
+                        <p><strong>Primeros Auxilios:</strong> Protocolo RICE (Reposo, Hielo, Compresión, Elevación), vendaje funcional.</p>
+                    </div>
+                    <div>
+                        <div class="incident-status status-completed">Recuperado</div>
+                    </div>
+                </div>
+                
+                <div class="incident-item">
+                    <div>
+                        <div class="incident-header">
+                            <div class="incident-title">Síntomas de conmoción cerebral</div>
+                            <div class="incident-date">20 Jun 2023 - 16:30</div>
+                        </div>
+                        <div class="incident-details">
+                            <div class="incident-detail">
+                                <i class="fas fa-user"></i>
+                                <span>Javier Méndez (16 años)</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-futbol"></i>
+                                <span>Fútbol</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-bone"></i>
+                                <span>Conmoción - Cabeza</span>
+                            </div>
+                            <div class="incident-detail">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Gravedad: Moderada</span>
+                            </div>
+                        </div>
+                        <p><strong>Descripción:</strong> Golpe en cabeza durante choque aéreo, mareo, confusión y dolor de cabeza persistente.</p>
+                        <p><strong>Primeros Auxilios:</strong> Evaluación SCAT5, observación continua, derivación a centro médico.</p>
+                    </div>
+                    <div>
+                        <div class="incident-status status-completed">Recuperado</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="card-title" style="margin-top: 40px;"><i class="fas fa-chart-line"></i> Tendencia Mensual de Lesiones</h2>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Ergo SaniTas SpA - Servicios de Medicina Familiar y Deportiva &copy; 2021</p>
+        <p>San Bernardo, Santiago, Chile | Tel: +56 9 6114 9975</p>
+        <p><www class="ergosanitas com"></www></p>
+    </footer>
+
+    <!-- Incluir módulo compartido -->
+    <script src="shared.js"></script>
+    
+    <script>
+        // Variables globales para gráficos
+        let sportChart, typeChart, trendChart;
+        
+        // Información detallada de cada paso del protocolo
+        const stepDetails = {
+            A: {
+                title: "Identificación de Emergencia",
+                content: `
+                    <p>Primer paso crucial donde se detecta y reconoce una situación de emergencia.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Reconocer signos de emergencia (inconsciencia, dificultad respiratoria, dolor intenso)</li>
+                        <li>Alertar inmediatamente al personal capacitado</li>
+                        <li>Asegurar la zona para prevenir más accidentes</li>
+                        <li>Evaluar rápidamente la gravedad de la situación</li>
+                    </ul>
+                    
+                    <h3>Responsables:</h3>
+                    <p>Entrenadores, personal médico, cualquier miembro del equipo presente.</p>
+                `
+            },
+            B: {
+                title: "Activación de Protocolos",
+                content: `
+                    <p>Puesta en marcha de los procedimientos de emergencia establecidos.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Designar un líder de emergencia</li>
+                        <li>Activar el sistema de respuesta a emergencias</li>
+                        <li>Preparar el equipo médico necesario</li>
+                        <li>Establecer comunicación con servicios médicos externos si es necesario</li>
+                    </ul>
+                    
+                    <h3>Equipo requerido:</h3>
+                    <p>Botiquín de primeros auxilios, DEA (si está disponible), teléfono móvil.</p>
+                `
+            },
+            C: {
+                title: "Evaluación Inicial y Primeros Auxilios",
+                content: `
+                    <p>Evaluación rápida del estado del deportista y aplicación de primeros auxilios.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Verificar consciencia y respiración</li>
+                        <li>Controlar hemorragias evidentes</li>
+                        <li>Inmovilizar sospechas de fracturas</li>
+                        <li>Aplicar RCP si es necesario</li>
+                        <li>Administrar primeros auxilios básicos</li>
+                    </ul>
+                    
+                    <h3>Precauciones:</h3>
+                    <p>No mover al deportista si se sospecha de lesión cervical, proteger del frío/calor.</p>
+                `
+            },
+            D: {
+                title: "Estabilización del Deportista",
+                content: `
+                    <p>Acciones para estabilizar al deportista mientras llega ayuda especializada.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Mantener vía aérea permeable</li>
+                        <li>Controlar signos vitales (pulso, respiración)</li>
+                        <li>Tratar el shock si está presente</li>
+                        <li>Administrar oxígeno si está disponible y se requiere</li>
+                        <li>Mantener al deportista cómodo y tranquilo</li>
+                    </ul>
+                    
+                    <h3>Objetivo:</h3>
+                    <p>Evitar el empeoramiento de la condición mientras se espera ayuda médica.</p>
+                `
+            },
+            E: {
+                title: "Registro de Datos del Incidente",
+                content: `
+                    <p>Documentación detallada de todo lo ocurrido y acciones tomadas.</p>
+                    
+                    <h3>Información a registrar:</h3>
+                    <ul>
+                        <li>Hora y lugar exacto del incidente</li>
+                        <li>Descripción detallada de lo ocurrido</li>
+                        <li>Acciones de primeros auxilios aplicadas</li>
+                        <li>Personas involucradas y testigos</li>
+                        <li>Condiciones ambientales relevantes</li>
+                        <li>Equipo utilizado</li>
+                    </ul>
+                    
+                    <h3>Importancia:</h3>
+                    <p>Fundamental para seguimiento médico, análisis de riesgos y aspectos legales.</p>
+                `
+            },
+            F: {
+                title: "Notificación a Padres/Tutores y Servicios Médicos",
+                content: `
+                    <p>Comunicación con las partes relevantes de manera clara y oportuna.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Contactar a padres/tutores con información clara y tranquilizadora</li>
+                        <li>Informar a servicios médicos con datos precisos para preparar su respuesta</li>
+                        <li>Notificar a dirección del centro/organización deportiva</li>
+                        <li>Coordinar punto de encuentro para el traslado</li>
+                    </ul>
+                    
+                    <h3>Protocolo de comunicación:</h3>
+                    <p>Mantener la calma, ser claro y conciso, evitar especulaciones, ofrecer apoyo.</p>
+                `
+            },
+            G: {
+                title: "Traslado si es Necesario",
+                content: `
+                    <p>Transporte seguro del deportista a un centro médico cuando se requiere.</p>
+                    
+                    <h3>Opciones de traslado:</h3>
+                    <ul>
+                        <li>Ambulancia medicalizada (casos graves)</li>
+                        <li>Vehículo particular (casos leves con supervisión)</li>
+                        <li>Transporte del club/organización con acompañante médico</li>
+                    </ul>
+                    
+                    <h3>Consideraciones:</h3>
+                    <p>No trasladar sin estabilización previa, llevar documentación médica, enviar acompañante.</p>
+                `
+            },
+            H: {
+                title: "Seguimiento y Rehabilitación",
+                content: `
+                    <p>Proceso posterior al incidente para la recuperación completa del deportista.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Visitas de seguimiento médico</li>
+                        <li>Programa de rehabilitación adaptado</li>
+                        <li>Soporte psicológico si es necesario</li>
+                        <li>Comunicación constante con familia y especialistas</li>
+                        <li>Evaluación para retorno deportivo seguro</li>
+                    </ul>
+                    
+                    <h3>Duración:</h3>
+                    <p>Varía según la gravedad de la lesión, desde días hasta meses.</p>
+                `
+            },
+            I: {
+                title: "Cierre del Incidente",
+                content: `
+                    <p>Finalización formal del proceso de gestión del incidente.</p>
+                    
+                    <h3>Acciones clave:</h3>
+                    <ul>
+                        <li>Revisión completa de la documentación</li>
+                        <li>Análisis de lo sucedido y lecciones aprendidas</li>
+                        <li>Actualización de protocolos si es necesario</li>
+                        <li>Comunicación de cierre a todas las partes involucradas</li>
+                        <li>Archivo de toda la documentación relacionada</li>
+                    </ul>
+                    
+                    <h3>Objetivo:</h3>
+                    <p>Garantizar que se han completado todas las acciones y mejorar la respuesta futura.</p>
+                `
+            }
+        };
+        
+        // Función para mostrar detalles al hacer clic
+        function showDetails(stepId) {
+            const panel = document.getElementById('detailsPanel');
+            const title = document.getElementById('panelTitle');
+            const content = document.getElementById('panelContent');
+            
+            if (stepDetails[stepId]) {
+                title.textContent = stepDetails[stepId].title;
+                content.innerHTML = stepDetails[stepId].content;
+                panel.classList.add('active');
+                
+                // Destacar el paso seleccionado
+                document.querySelectorAll('.step').forEach(step => {
+                    step.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                    step.style.transform = 'translateX(-50%)';
+                });
+                
+                const selectedStep = document.querySelector(`.step[data-step="${stepId}"]`);
+                if (selectedStep) {
+                    selectedStep.style.boxShadow = '0 0 0 3px var(--accent)';
+                    selectedStep.style.transform = 'translateX(-50%) scale(1.05)';
+                }
+                
+                // Scroll suave al panel
+                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        
+        // Agregar event listeners a los pasos del diagrama
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', () => {
+                const stepId = step.getAttribute('data-step');
+                showDetails(stepId);
+            });
+        });
+        
+        // Animación inicial para resaltar el flujo
+        setTimeout(() => {
+            const steps = document.querySelectorAll('.step');
+            let delay = 0;
+            
+            steps.forEach(step => {
+                setTimeout(() => {
+                    step.style.transform = 'translateX(-50%) scale(1.1)';
+                    step.style.boxShadow = '0 0 0 3px var(--primary)';
+                    
+                    setTimeout(() => {
+                        step.style.transform = 'translateX(-50%)';
+                        step.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                    }, 500);
+                }, delay);
+                
+                delay += 300;
+            });
+        }, 1000);
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (typeof SharedModule === 'undefined') {
+                    console.error('SharedModule no disponible');
+                    return;
+                }
+
+                // Configurar listeners para actualizaciones
+                SharedModule.registerAlertListener(handleAlertUpdate);
+                window.addEventListener('incidentAdded', updateStatistics);
+                window.addEventListener('statisticsUpdated', refreshCharts);
+                
+                // Inicializar componentes
+                initializeProtocolDiagram();
+                initializeCharts();
+                updateDashboard();
+                
+                console.log('Panel de Liga inicializado correctamente');
+            } catch (error) {
+                console.error('Error inicializando Panel de Liga:', error);
+            }
+        });
+
+        // Manejar actualizaciones de alertas
+        function handleAlertUpdate(alertEvent) {
+            try {
+                if (alertEvent.type === 'set') {
+                    updateCurrentAlertInfo(alertEvent.data);
+                } else if (alertEvent.type === 'clear') {
+                    clearCurrentAlertInfo();
+                }
+            } catch (error) {
+                console.error('Error manejando actualización de alerta:', error);
+            }
+        }
+
+        // Actualizar información de alerta actual
+        function updateCurrentAlertInfo(alertData) {
+            // Crear panel de alerta si no existe
+            let alertInfoPanel = document.querySelector('.current-alert-info');
+            if (!alertInfoPanel) {
+                alertInfoPanel = document.createElement('div');
+                alertInfoPanel.className = 'current-alert-info';
+                alertInfoPanel.style.cssText = `
+                    position: fixed; top: 80px; right: 20px; z-index: 1000;
+                    background: white; border-radius: 10px; padding: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+                    max-width: 350px; border-left: 4px solid var(--danger);
+                `;
+                document.body.appendChild(alertInfoPanel);
+            }
+            
+            const levelColor = alertData.level === 'leve' ? 'var(--success)' : 
+                             alertData.level === 'moderada' ? 'var(--warning)' : 'var(--danger)';
+            
+            alertInfoPanel.innerHTML = `
+                <h3 style="color: ${levelColor}; margin-bottom: 15px;">
+                    <i class="fas fa-exclamation-triangle"></i> Alerta ${alertData.level.toUpperCase()} Activa
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                    <div><strong>Ubicación:</strong> ${alertData.location}</div>
+                    <div><strong>Tipo:</strong> ${alertData.type}</div>
+                    <div><strong>Prioridad:</strong> ${alertData.priority || 'NORMAL'}</div>
+                    <div><strong>Hora:</strong> ${new Date(alertData.timestamp).toLocaleTimeString()}</div>
+                </div>
+                ${alertData.relatedClub ? `
+                    <div style="margin-top: 10px; padding: 10px; background: rgba(26, 109, 204, 0.1); border-radius: 5px;">
+                        <strong>Club Afectado:</strong> ${alertData.relatedClub.name} (${alertData.relatedClub.category})
+                    </div>
+                ` : ''}
+            `;
+            alertInfoPanel.style.display = 'block';
+        }
+
+        // Limpiar información de alerta
+        function clearCurrentAlertInfo() {
+            const alertInfoPanel = document.querySelector('.current-alert-info');
+            if (alertInfoPanel) {
+                alertInfoPanel.style.display = 'none';
+            }
+        }
+
+        // Actualizar dashboard principal
+        function updateDashboard() {
+            try {
+                const stats = SharedModule.getStatistics();
+                const clubData = SharedModule.getClubData();
+                
+                // Actualizar indicadores de seguridad
+                updateSafetyIndicators(stats);
+                
+                // Actualizar información de clubes
+                updateClubInfo(clubData);
+                
+                // Actualizar historial de incidentes
+                updateIncidentHistory();
+                
+            } catch (error) {
+                console.error('Error actualizando dashboard:', error);
+            }
+        }
+
+        // Actualizar indicadores de seguridad
+        function updateSafetyIndicators(stats) {
+            const indicators = document.querySelectorAll('.safety-indicator');
+            if (indicators.length >= 3 && stats) {
+                // Días sin lesiones graves
+                const graveDays = calculateDaysSinceLastIncident('grave', stats);
+                indicators[0].querySelector('.indicator-value').textContent = graveDays;
+                
+                // Días sin lesiones moderadas
+                const moderateDays = calculateDaysSinceLastIncident('moderada', stats);
+                indicators[1].querySelector('.indicator-value').textContent = moderateDays;
+                
+                // Días sin lesiones leves
+                const mildDays = calculateDaysSinceLastIncident('leve', stats);
+                indicators[2].querySelector('.indicator-value').textContent = mildDays;
+            }
+        }
+
+        // Calcular días desde último incidente
+        function calculateDaysSinceLastIncident(severity, stats) {
+            const history = SharedModule.getIncidentHistory();
+            const lastIncident = history.find(incident => incident.severity === severity);
+            
+            if (!lastIncident) return 999; // Si no hay incidentes de este tipo
+            
+            const lastDate = new Date(lastIncident.createdAt);
+            const today = new Date();
+            const diffTime = Math.abs(today - lastDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        // Actualizar información de clubes
+        function updateClubInfo(clubData) {
+            const teamList = document.querySelector('.team-list');
+            if (teamList && clubData.clubs) {
+                const teamItems = teamList.querySelectorAll('.team-item');
+                
+                clubData.clubs.forEach((club, index) => {
+                    if (teamItems[index + 1]) { // +1 porque el primer item es el enfermero
+                        const teamName = teamItems[index + 1].querySelector('.team-name');
+                        const teamLocation = teamItems[index + 1].querySelector('.team-location');
+                        
+                        if (teamName) teamName.textContent = club.name;
+                        if (teamLocation) teamLocation.textContent = `${club.field} - ${club.category}`;
+                    }
+                });
+            }
+        }
+
+        // Actualizar historial de incidentes
+        function updateIncidentHistory() {
+            const history = SharedModule.getIncidentHistory();
+            const incidentList = document.querySelector('.incident-list');
+            
+            if (incidentList && history.length > 0) {
+                incidentList.innerHTML = '';
+                
+                // Mostrar los últimos 5 incidentes
+                history.slice(0, 5).forEach(incident => {
+                    const incidentItem = createIncidentElement(incident);
+                    incidentList.appendChild(incidentItem);
+                });
+            }
+        }
+
+        // Crear elemento de incidente
+        function createIncidentElement(incident) {
+            const div = document.createElement('div');
+            div.className = 'incident-item';
+            
+            const statusClass = incident.status === 'completado' ? 'status-completed' : 
+                               incident.status === 'progreso' ? 'status-in-progress' : 'status-pending';
+            
+            div.innerHTML = `
+                <div>
+                    <div class="incident-header">
+                        <div class="incident-title">${incident.incidentType || incident.type || 'Incidente médico'}</div>
+                        <div class="incident-date">${new Date(incident.createdAt).toLocaleDateString()}</div>
+                    </div>
+                    <div class="incident-details">
+                        <div class="incident-detail">
+                            <i class="fas fa-user"></i>
+                            <span>${incident.athleteName || 'Deportista'} (${incident.athleteAge || 'N/A'} años)</span>
+                        </div>
+                        <div class="incident-detail">
+                            <i class="fas fa-futbol"></i>
+                            <span>${incident.sportType || 'Deporte'}</span>
+                        </div>
+                        <div class="incident-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${incident.incidentLocation || incident.location || 'Ubicación'}</span>
+                        </div>
+                        <div class="incident-detail">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>Gravedad: ${incident.severity || 'N/A'}</span>
+                        </div>
+                    </div>
+                    <p><strong>Descripción:</strong> ${incident.incidentDescription || incident.type || 'Sin descripción'}</p>
+                </div>
+                <div>
+                    <div class="incident-status ${statusClass}">${incident.status || 'Pendiente'}</div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // Inicializar gráficos
+        function initializeCharts() {
+            try {
+                const stats = SharedModule.getStatistics();
+                
+                // Gráfico de lesiones por deporte
+                const sportCtx = document.getElementById('sportInjuryChart');
+                if (sportCtx) {
+                    sportChart = new Chart(sportCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: Object.keys(stats.bySport || {}),
+                            datasets: [{
+                                data: Object.values(stats.bySport || {}),
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 0.7)', 'rgba(255, 99, 132, 0.7)', 'rgba(255, 159, 64, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(201, 203, 207, 0.7)',
+                                    'rgba(255, 205, 86, 0.7)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'right' },
+                                title: { display: true, text: 'Distribución por Deporte' }
+                            }
+                        }
+                    });
+                }
+                
+                // Gráfico de lesiones por tipo
+                const typeCtx = document.getElementById('typeInjuryChart');
+                if (typeCtx) {
+                    typeChart = new Chart(typeCtx.getContext('2d'), {
+                        type: 'pie',
+                        data: {
+                            labels: Object.keys(stats.byType || {}),
+                            datasets: [{
+                                data: Object.values(stats.byType || {}),
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 159, 64, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(255, 205, 86, 0.7)',
+                                    'rgba(201, 203, 207, 0.7)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'right' },
+                                title: { display: true, text: 'Distribución por Tipo de Lesión' }
+                            }
+                        }
+                    });
+                }
+                
+                // Gráfico de tendencia mensual
+                const trendCtx = document.getElementById('trendChart');
+                if (trendCtx) {
+                    const monthlyData = generateMonthlyData(stats);
+                    trendChart = new Chart(trendCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                            datasets: [{
+                                label: 'Lesiones Leves',
+                                data: monthlyData.leve,
+                                borderColor: 'rgba(40, 167, 69, 1)',
+                                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }, {
+                                label: 'Lesiones Moderadas',
+                                data: monthlyData.moderada,
+                                borderColor: 'rgba(255, 193, 7, 1)',
+                                backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }, {
+                                label: 'Lesiones Graves',
+                                data: monthlyData.grave,
+                                borderColor: 'rgba(220, 53, 69, 1)',
+                                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: 'Número de Lesiones' }
+                                },
+                                x: {
+                                    title: { display: true, text: 'Meses del Año' }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error inicializando gráficos:', error);
+            }
+        }
+
+        // Generar datos mensuales
+        function generateMonthlyData(stats) {
+            const history = SharedModule.getIncidentHistory();
+            const monthlyData = {
+                leve: new Array(12).fill(0),
+                moderada: new Array(12).fill(0),
+                grave: new Array(12).fill(0)
+            };
+            
+            history.forEach(incident => {
+                const month = new Date(incident.createdAt).getMonth();
+                const severity = incident.severity || 'leve';
+                if (monthlyData[severity]) {
+                    monthlyData[severity][month]++;
+                }
+            });
+            
+            return monthlyData;
+        }
+
+        // Refrescar gráficos
+        function refreshCharts() {
+            try {
+                const stats = SharedModule.getStatistics();
+                
+                if (sportChart) {
+                    sportChart.data.labels = Object.keys(stats.bySport || {});
+                    sportChart.data.datasets[0].data = Object.values(stats.bySport || {});
+                    sportChart.update();
+                }
+                
+                if (typeChart) {
+                    typeChart.data.labels = Object.keys(stats.byType || {});
+                    typeChart.data.datasets[0].data = Object.values(stats.byType || {});
+                    typeChart.update();
+                }
+                
+                if (trendChart) {
+                    const monthlyData = generateMonthlyData(stats);
+                    trendChart.data.datasets[0].data = monthlyData.leve;
+                    trendChart.data.datasets[1].data = monthlyData.moderada;
+                    trendChart.data.datasets[2].data = monthlyData.grave;
+                    trendChart.update();
+                }
+            } catch (error) {
+                console.error('Error refrescando gráficos:', error);
+            }
+        }
+
+        // Inicializar diagrama de protocolo
+        function initializeProtocolDiagram() {
+            // Agregar event listeners a los pasos del diagrama
+            document.querySelectorAll('.step').forEach(step => {
+                step.addEventListener('click', () => {
+                    const stepId = step.getAttribute('data-step');
+                    showDetails(stepId);
+                });
+            });
+            
+            // Animación inicial para resaltar el flujo
+            setTimeout(() => {
+                const steps = document.querySelectorAll('.step');
+                let delay = 0;
+                
+                steps.forEach(step => {
+                    setTimeout(() => {
+                        step.style.transform = 'translateX(-50%) scale(1.1)';
+                        step.style.boxShadow = '0 0 0 3px var(--primary)';
+                        
+                        setTimeout(() => {
+                            step.style.transform = 'translateX(-50%)';
+                            step.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                        }, 500);
+                    }, delay);
+                    
+                    delay += 300;
+                });
+            }, 1000);
+        }
+
+        // Actualizar estadísticas
+        function updateStatistics() {
+            updateDashboard();
+            refreshCharts();
+        }
+    </script>
+</body>
+</html>
