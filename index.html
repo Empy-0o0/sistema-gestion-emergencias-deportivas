@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Sistema de Gestión Médica Deportiva | Ergo SaniTas SpA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a6dcc;
+            --secondary: #0d3c6c;
+            --accent: #ff6b35;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
+            --font-base: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-base);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: white;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .header h1 .brand-accent {
+            color: var(--primary);
+        }
+
+        .header-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            font-weight: 400;
+            margin-top: 0.5rem;
+            max-width: 600px;
+        }
+
+        .system-status {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--success);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Panel Cards */
+        .panel-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        .panel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .panel-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .panel-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .panel-card.brigada::before {
+            background: linear-gradient(90deg, var(--danger) 0%, #ff6b6b 100%);
+        }
+
+        .panel-card.enfermeria::before {
+            background: linear-gradient(90deg, var(--primary) 0%, #4dabf7 100%);
+        }
+
+        .panel-card.liga::before {
+            background: linear-gradient(90deg, var(--success) 0%, #51cf66 100%);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .panel-icon.brigada {
+            background: linear-gradient(135deg, var(--danger) 0%, #ff6b6b 100%);
+        }
+
+        .panel-icon.enfermeria {
+            background: linear-gradient(135deg, var(--primary) 0%, #4dabf7 100%);
+        }
+
+        .panel-icon.liga {
+            background: linear-gradient(135deg, var(--success) 0%, #51cf66 100%);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .panel-description {
+            font-size: 1rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .panel-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--gray-100);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .panel-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            gap: 0.5rem;
+        }
+
+        .panel-button:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .panel-button.brigada {
+            background: linear-gradient(135deg, var(--danger) 0%, #ff6b6b 100%);
+        }
+
+        .panel-button.brigada:hover {
+            background: linear-gradient(135deg, #c82333 0%, #e55555 100%);
+        }
+
+        .panel-button.enfermeria {
+            background: linear-gradient(135deg, var(--primary) 0%, #4dabf7 100%);
+        }
+
+        .panel-button.enfermeria:hover {
+            background: linear-gradient(135deg, var(--secondary) 0%, #339af0 100%);
+        }
+
+        .panel-button.liga {
+            background: linear-gradient(135deg, var(--success) 0%, #51cf66 100%);
+        }
+
+        .panel-button.liga:hover {
+            background: linear-gradient(135deg, #218838 0%, #40c057 100%);
+        }
+
+        /* System Overview */
+        .system-overview {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        .overview-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .overview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .overview-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .overview-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-value.success {
+            color: var(--success);
+        }
+
+        .overview-value.warning {
+            color: var(--warning);
+        }
+
+        .overview-value.danger {
+            color: var(--danger);
+        }
+
+        .overview-value.primary {
+            color: var(--primary);
+        }
+
+        .overview-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .footer-brand {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+
+            .system-status {
+                position: static;
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .panel-card {
+                padding: 1.5rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+                text-align: center;
+            }
+
+            .panel-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert Notification */
+        .alert-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Alert Notification -->
+    <div class="alert-notification" id="alertNotification">
+        <div id="alertMessage"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="system-status" id="systemStatus">
+                <div class="status-indicator"></div>
+                <span>Sistema Operativo</span>
+            </div>
+            
+            <div class="logo-section">
+                <div class="logo-icon">ES</div>
+                <div>
+                    <h1>Ergo<span class="brand-accent">SaniTas</span></h1>
+                    <p class="header-subtitle">Sistema Integral de Gestión Médica Deportiva</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- System Overview -->
+        <section class="system-overview">
+            <div class="overview-header">
+                <h2 class="overview-title">Resumen del Sistema</h2>
+            </div>
+            <div class="overview-grid" id="overviewGrid">
+                <div class="overview-card">
+                    <div class="overview-value success" id="daysWithoutIncidents">--</div>
+                    <div class="overview-label">Días sin incidentes graves</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-value primary" id="totalIncidents">--</div>
+                    <div class="overview-label">Total de incidentes registrados</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-value warning" id="activeAlerts">--</div>
+                    <div class="overview-label">Alertas activas</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-value primary" id="activeClubs">--</div>
+                    <div class="overview-label">Clubes participantes</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+            <!-- Panel de Brigada -->
+            <div class="panel-card brigada">
+                <div class="panel-header">
+                    <div class="panel-icon brigada">B</div>
+                    <h2 class="panel-title">Panel de Brigada de Emergencias</h2>
+                </div>
+                <p class="panel-description">
+                    Administre alertas de emergencia, coordine la movilización del equipo médico y gestione la respuesta inmediata a incidentes deportivos.
+                </p>
+                <div class="panel-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="alertsActivated">--</div>
+                        <div class="stat-label">Alertas Activadas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="responseTime">--</div>
+                        <div class="stat-label">Tiempo Promedio</div>
+                    </div>
+                </div>
+                <a href="PanelBrigadaEmerg.html" class="panel-button brigada">
+                    Acceder al Panel de Brigada
+                </a>
+            </div>
+
+            <!-- Panel de Enfermería -->
+            <div class="panel-card enfermeria">
+                <div class="panel-header">
+                    <div class="panel-icon enfermeria">E</div>
+                    <h2 class="panel-title">Panel de Enfermería</h2>
+                </div>
+                <p class="panel-description">
+                    Gestione la recepción de alertas, registre incidentes médicos detallados y coordine la atención directa a los deportistas lesionados.
+                </p>
+                <div class="panel-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="incidentsRegistered">--</div>
+                        <div class="stat-label">Incidentes Registrados</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="nurseStatus">--</div>
+                        <div class="stat-label">Estado Actual</div>
+                    </div>
+                </div>
+                <a href="PanelEnfermeria.html" class="panel-button enfermeria">
+                    Acceder al Panel de Enfermería
+                </a>
+            </div>
+
+            <!-- Panel de Liga -->
+            <div class="panel-card liga">
+                <div class="panel-header">
+                    <div class="panel-icon liga">L</div>
+                    <h2 class="panel-title">Panel de Liga y Estadísticas</h2>
+                </div>
+                <p class="panel-description">
+                    Consulte estadísticas detalladas, genere informes de incidentes y analice tendencias para mejorar la seguridad deportiva.
+                </p>
+                <div class="panel-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="monthlyTrend">--</div>
+                        <div class="stat-label">Tendencia Mensual</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="safetyScore">--</div>
+                        <div class="stat-label">Índice de Seguridad</div>
+                    </div>
+                </div>
+                <a href="PanelLiga.html" class="panel-button liga">
+                    Acceder al Panel de Liga
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">Ergo SaniTas SpA - Servicios de Medicina Deportiva</div>
+            <div class="footer-info">
+                <div>San Bernardo, Santiago, Chile</div>
+                <div>Tel: +56 9 6114 9975 | www.ergosanitas.com</div>
+                <div>&copy; 2025 Todos los derechos reservados</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="shared.js"></script>
+    <script>
+        // Variables globales
+        let systemData = null;
+        let updateInterval = null;
+
+        // Inicialización del sistema
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                console.log('🏠 Inicializando Dashboard Principal...');
+                
+                // Verificar disponibilidad del SharedModule
+                if (typeof SharedModule === 'undefined') {
+                    console.error('SharedModule no disponible');
+                    showSystemError('Error: Módulo compartido no disponible');
+                    return;
+                }
+
+                // Inicializar componentes
+                initializeSystemOverview();
+                setupEventListeners();
+                startPeriodicUpdates();
+                
+                console.log('✅ Dashboard Principal inicializado correctamente');
+                
+            } catch (error) {
+                console.error('❌ Error inicializando Dashboard:', error);
+                showSystemError('Error al inicializar el sistema');
+            }
+        });
+
+        // Inicializar resumen del sistema
+        function initializeSystemOverview() {
+            try {
+                updateSystemOverview();
+                updatePanelStatistics();
+                checkActiveAlerts();
+                
+            } catch (error) {
+                console.error('Error inicializando resumen del sistema:', error);
+            }
+        }
+
+        // Actualizar resumen del sistema
+        function updateSystemOverview() {
+            try {
+                const stats = SharedModule.getStatistics();
+                const clubData = SharedModule.getClubData();
+                const currentAlert = SharedModule.getAlert();
+                const incidentHistory = SharedModule.getIncidentHistory();
+
+                // Días sin incidentes graves
+                const daysWithoutGrave = calculateDaysSinceLastIncident('grave', incidentHistory);
+                document.getElementById('daysWithoutIncidents').textContent = daysWithoutGrave;
+
+                // Total de incidentes
+                document.getElementById('totalIncidents').textContent = stats?.total || 0;
+
+                // Alertas activas
+                document.getElementById('activeAlerts').textContent = currentAlert ? 1 : 0;
+
+                // Clubes activos
+                document.getElementById('activeClubs').textContent = clubData?.totalClubs || 0;
+
+                // Actualizar estado del sistema
+                updateSystemStatus(currentAlert);
+
+            } catch (error) {
+                console.error('Error actualizando resumen del sistema:', error);
+                // Mostrar valores por defecto en caso de error
+                document.getElementById('daysWithoutIncidents').textContent = '--';
+                document.getElementById('totalIncidents').textContent = '--';
+                document.getElementById('activeAlerts').textContent = '--';
+                document.getElementById('activeClubs').textContent = '--';
+            }
+        }
+
+        // Actualizar estadísticas de paneles
+        function updatePanelStatistics() {
+            try {
+                const stats = SharedModule.getStatistics();
+                const incidentHistory = SharedModule.getIncidentHistory();
+                const brigadistaStatus = SharedModule.getStatus();
+
+                // Panel de Brigada
+                const totalAlerts = (stats?.byLevel?.leve || 0) + (stats?.byLevel?.moderada || 0) + (stats?.byLevel?.grave || 0);
+                document.getElementById('alertsActivated').textContent = totalAlerts;
+                document.getElementById('responseTime').textContent = calculateAverageResponseTime(incidentHistory);
+
+                // Panel de Enfermería
+                document.getElementById('incidentsRegistered').textContent = incidentHistory.length;
+                document.getElementById('nurseStatus').textContent = getStatusLabel(brigadistaStatus.status);
+
+                // Panel de Liga
+                document.getElementById('monthlyTrend').textContent = calculateMonthlyTrend(incidentHistory);
+                document.getElementById('safetyScore').textContent = calculateSafetyScore(stats);
+
+            } catch (error) {
+                console.error('Error actualizando estadísticas de paneles:', error);
+            }
+        }
+
+        // Calcular días desde último incidente
+        function calculateDaysSinceLastIncident(severity, history) {
+            try {
+                const lastIncident = history.find(incident => incident.severity === severity);
+                
+                if (!lastIncident) return 999;
+                
+                const lastDate = new Date(lastIncident.createdAt);
+                const today = new Date();
+                const diffTime = Math.abs(today - lastDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                return diffDays;
+            } catch (error) {
+                return '--';
+            }
+        }
+
+        // Calcular tiempo promedio de respuesta
+        function calculateAverageResponseTime(history) {
+            try {
+                if (!history || history.length === 0) return '--';
+                
+                const completedIncidents = history.filter(incident => 
+                    incident.status === 'completado' && incident.completedAt
+                );
+                
+                if (completedIncidents.length === 0) return '--';
+                
+                const totalTime = completedIncidents.reduce((sum, incident) => {
+                    const start = new Date(incident.createdAt);
+                    const end = new Date(incident.completedAt);
+                    return sum + (end - start);
+                }, 0);
+                
+                const averageMinutes = Math.round((totalTime / completedIncidents.length) / (1000 * 60));
+                return `${averageMinutes}min`;
+                
+            } catch (error) {
+                return '--';
+            }
+        }
+
+        // Obtener etiqueta de estado
+        function getStatusLabel(status) {
+            const statusLabels = {
+                'available': 'Disponible',
+                'busy': 'Ocupado',
+                'emergency': 'Emergencia'
+            };
+            return statusLabels[status] || 'Desconocido';
+        }
+
+        // Calcular tendencia mensual
+        function calculateMonthlyTrend(history) {
+            try {
+                if (!history || history.length === 0) return '--';
+                
+                const currentMonth = new Date().getMonth();
+                const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+                
+                const currentMonthIncidents = history.filter(incident => 
+                    new Date(incident.createdAt).getMonth() === currentMonth
+                ).length;
+                
+                const lastMonthIncidents = history.filter(incident => 
+                    new Date(incident.createdAt).getMonth() === lastMonth
+                ).length;
+                
+                if (lastMonthIncidents === 0) return currentMonthIncidents > 0 ? '+100%' : '0%';
+                
+                const trend = ((currentMonthIncidents - lastMonthIncidents) / lastMonthIncidents) * 100;
+                return trend > 0 ? `+${Math.round(trend)}%` : `${Math.round(trend)}%`;
+                
+            } catch (error) {
+                return '--';
+            }
+        }
+
+        // Calcular índice de seguridad
+        function calculateSafetyScore(stats) {
+            try {
+                if (!stats || !stats.total) return '100';
+                
+                const graveWeight = 3;
+                const moderadaWeight = 2;
+                const leveWeight = 1;
+                
+                const totalWeighted = (stats.byLevel?.grave || 0) * graveWeight + 
+                                    (stats.byLevel?.moderada || 0) * moderadaWeight + 
+                                    (stats.byLevel?.leve || 0) * leveWeight;
+                
+                const maxPossibleScore = 100;
+                const score = Math.max(0, maxPossibleScore - totalWeighted);
+                
+                return Math.round(score);
+                
+            } catch (error) {
+                return '--';
+            }
+        }
+
+        // Verificar alertas activas
+        function checkActiveAlerts() {
+            try {
+                const currentAlert = SharedModule.getAlert();
+                
+                if (currentAlert) {
+                    showAlertNotification(currentAlert);
+                }
+                
+            } catch (error) {
+                console.error('Error verificando alertas activas:', error);
+            }
+        }
+
+        // Mostrar notificación de alerta
+        function showAlertNotification(alertData) {
+            const notification = document.getElementById('alertNotification');
+            const message = document.getElementById('alertMessage');
+            
+            const levelText = alertData.level.toUpperCase();
+            const locationText = alertData.location || 'Ubicación no especificada';
+            
+            message.textContent = `🚨 ALERTA ${levelText} ACTIVA: ${locationText}`;
+            notification.classList.add('show');
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Actualizar estado del sistema
+        function updateSystemStatus(currentAlert) {
+            const statusElement = document.getElementById('systemStatus');
+            const statusIndicator = statusElement.querySelector('.status-indicator');
+            const statusText = statusElement.querySelector('span');
+            
+            if (currentAlert) {
+                statusIndicator.style.background = 'var(--danger)';
+                statusText.textContent = `Alerta ${currentAlert.level} Activa`;
+                statusElement.style.background = 'rgba(220, 53, 69, 0.1)';
+                statusElement.style.color = 'var(--danger)';
+            } else {
+                statusIndicator.style.background = 'var(--success)';
+                statusText.textContent = 'Sistema Operativo';
+                statusElement.style.background = 'rgba(40, 167, 69, 0.1)';
+                statusElement.style.color = 'var(--success)';
+            }
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            try {
+                // Listener para cambios de alertas
+                SharedModule.registerAlertListener(function(alertEvent) {
+                    console.log('🔔 Cambio de alerta detectado en Dashboard:', alertEvent);
+                    
+                    if (alertEvent.type === 'set' && alertEvent.data) {
+                        showAlertNotification(alertEvent.data);
+                        updateSystemStatus(alertEvent.data);
+                    } else if (alertEvent.type === 'clear') {
+                        updateSystemStatus(null);
+                    }
+                    
+                    // Actualizar estadísticas
+                    updateSystemOverview();
+                    updatePanelStatistics();
+                });
+
+                // Listener para cambios de estado
+                SharedModule.registerStatusListener(function(statusData) {
+                    console.log('👤 Cambio de estado detectado:', statusData);
+                    updatePanelStatistics();
+                });
+
+                // Listener para nuevos incidentes
+                window.addEventListener('incidentAdded', function(event) {
+                    console.log('📝 Nuevo incidente registrado:', event.detail);
+                    updateSystemOverview();
+                    updatePanelStatistics();
+                });
+
+                // Listener para actualizaciones de estadísticas
+                window.addEventListener('statisticsUpdated', function(event) {
+                    console.log('📊 Estadísticas actualizadas:', event.detail);
+                    updateSystemOverview();
+                    updatePanelStatistics();
+                });
+
+            } catch (error) {
+                console.error('Error configurando event listeners:', error);
+            }
+        }
+
+        // Iniciar actualizaciones periódicas
+        function startPeriodicUpdates() {
+            // Actualizar cada 30 segundos
+            updateInterval = setInterval(() => {
+                try {
+                    updateSystemOverview();
+                    updatePanelStatistics();
+                    checkActiveAlerts();
+                } catch (error) {
+                    console.error('Error en actualización periódica:', error);
+                }
+            }, 30000);
+        }
+
+        // Mostrar error del sistema
+        function showSystemError(message) {
+            const notification = document.getElementById('alertNotification');
+            const messageElement = document.getElementById('alertMessage');
+            
+            messageElement.textContent = message;
+            notification.style.background = 'var(--danger)';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 8000);
+        }
+
+        // Limpiar al salir de la página
+        window.addEventListener('beforeunload', function() {
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+        });
