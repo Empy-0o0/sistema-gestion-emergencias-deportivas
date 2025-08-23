@@ -1,151 +1,151 @@
-# Sistema de Gestión de Emergencias Deportivas - Ergo SaniTas SpA
+# Sistema de Gestión de Emergencias Deportivas - Next.js
 
-## Descripción del Proyecto
+## 🚀 Descripción del Proyecto
 
-Sistema integral de gestión de emergencias médicas deportivas que conecta tres paneles principales para el manejo coordinado de incidentes en eventos deportivos.
+Sistema integral de gestión de emergencias médicas deportivas desarrollado en **Next.js** con autenticación completa y panel de administración. Conecta múltiples paneles para el manejo coordinado de incidentes en eventos deportivos.
 
-## Arquitectura del Sistema
+## ✨ Características Principales
 
-### Componentes Principales
+### 🔐 Sistema de Autenticación
+- **Login seguro** con credenciales por rol
+- **Rutas protegidas** con autorización basada en roles
+- **Gestión de sesiones** persistente
+- **4 roles de usuario**: Administrador, Brigada, Enfermería, Liga
 
-1. **PanelBrigadaEmerg.html** - Panel de Activación de Alertas
-   - Permite activar alertas de emergencia (leve, moderada, grave)
-   - Gestiona información de clubes y canchas
-   - Coordina respuesta de equipos de emergencia
-   - Incluye sirena para alertas graves
+### 👨‍💼 Panel de Administración - CRUD Completo
+- ✅ **Crear usuarios** - Formulario completo con validación
+- ✅ **Leer usuarios** - Lista organizada con información detallada
+- ✅ **Actualizar usuarios** - Edición de perfiles y roles
+- ✅ **Eliminar usuarios** - Gestión segura de eliminación
+- 📊 **Estadísticas del sistema** en tiempo real
 
-2. **PanelEnfermeria.html** - Panel de Recepción y Atención
-   - Recibe alertas automáticamente del Panel de Brigada
-   - Gestiona el estado del brigadista (disponible, ocupado, emergencia)
-   - Registra incidentes médicos detallados
-   - Controla el flujo de atención de emergencias
+### 🚨 Paneles Operativos
+1. **Dashboard Principal** - Resumen del sistema con métricas
+2. **Panel de Brigada** - Activación de alertas (Leve, Moderada, Grave)
+3. **Panel de Enfermería** - Recepción de alertas y registro de incidentes
+4. **Panel de Liga** - Estadísticas con gráficos interactivos
+5. **Panel de Administración** - Gestión completa de usuarios
 
-3. **PanelLiga.html** - Panel de Estadísticas y Gestión
-   - Genera estadísticas basadas en datos de los otros paneles
-   - Muestra protocolos de gestión de incidentes
-   - Presenta gráficos y tendencias de lesiones
-   - Gestiona información de clubes participantes
+## 🛠️ Tecnologías Utilizadas
 
-4. **shared.js** - Módulo de Comunicación Compartida
-   - Centraliza la comunicación entre paneles
-   - Maneja localStorage para persistencia de datos
-   - Proporciona eventos en tiempo real
-   - Gestiona estadísticas y historial de incidentes
+- **Next.js 15.5.0** - Framework React con App Router
+- **React 19** - Biblioteca de interfaz de usuario
+- **Chart.js** - Gráficos interactivos
+- **Context API** - Gestión de estado global
+- **CSS Modules** - Estilos modulares
+- **Google Fonts** - Tipografía moderna
+- **LocalStorage** - Persistencia de datos (demo)
 
-## Características Principales
+## 🚀 Instalación y Uso
+
+### Prerrequisitos
+- Node.js 18+ 
+- npm o yarn
+
+### Instalación
+```bash
+# Clonar el repositorio
+git clone https://github.com/Empy-0o0/sistema-emergencias-deportivas.git
+
+# Navegar al directorio
+cd sistema-emergencias-deportivas
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+```
+
+### Scripts Disponibles
+```bash
+npm run dev      # Servidor de desarrollo
+npm run build    # Construir para producción
+npm run start    # Servidor de producción
+npm run lint     # Verificar código
+```
+
+## 🔑 Credenciales de Demostración
+
+| Rol | Usuario | Contraseña | Permisos |
+|-----|---------|------------|----------|
+| **Administrador** | `admin` | `admin123` | Acceso completo al sistema |
+| **Brigada** | `brigada` | `brigada123` | Activación de alertas |
+| **Enfermería** | `enfermeria` | `enfermeria123` | Registro de incidentes |
+| **Liga** | `liga` | `liga123` | Estadísticas y reportes |
+
+## 📱 Funcionalidades por Panel
+
+### 🏠 Dashboard
+- Resumen del sistema con estadísticas clave
+- Navegación rápida a todos los paneles
+- Indicadores de estado en tiempo real
+
+### 🚨 Panel de Brigada
+- Activación de alertas por nivel de gravedad
+- Historial de alertas recientes
+- Gestión de equipos de emergencia
+- Sirena automática para alertas graves
+
+### 🏥 Panel de Enfermería
+- Recepción automática de alertas
+- Formulario completo de registro de incidentes
+- Gestión de estado del brigadista
+- Confirmación y seguimiento de emergencias
+
+### 📊 Panel de Liga
+- Gráficos interactivos de estadísticas
+- Protocolo de gestión de incidentes (9 pasos)
+- Tendencias mensuales de lesiones
+- Indicadores de seguridad
+
+### ⚙️ Panel de Administración
+- CRUD completo de usuarios
+- Asignación de roles y permisos
+- Estadísticas del sistema
+- Herramientas de administración
+
+## 🎨 Diseño y UX
+
+- **Interfaz moderna** sin dependencias de iconos externos
+- **Diseño responsive** adaptable a todos los dispositivos
+- **Tipografía limpia** con Google Fonts (Inter)
+- **Sistema de colores** coherente y accesible
+- **Navegación intuitiva** con breadcrumbs y menús claros
+
+## 🔧 Arquitectura Técnica
+
+### Estructura del Proyecto
+```
+src/
+├── app/                 # App Router de Next.js
+│   ├── layout.js       # Layout principal
+│   ├── page.js         # Dashboard
+│   ├── login/          # Página de login
+│   ├── admin/          # Panel de administración
+│   ├── brigada/        # Panel de brigada
+│   ├── enfermeria/     # Panel de enfermería
+│   └── liga/           # Panel de liga
+├── components/         # Componentes reutilizables
+├── context/           # Context API para estado global
+├── utils/             # Utilidades y módulo compartido
+└── styles/            # Estilos globales
+```
 
 ### Comunicación en Tiempo Real
-- Los paneles se comunican automáticamente usando localStorage y eventos personalizados
-- Las alertas activadas en PanelBrigadaEmerg.html aparecen instantáneamente en PanelEnfermeria.html
-- Las estadísticas se actualizan dinámicamente en PanelLiga.html
+- **SharedModule** refactorizado para Next.js
+- **Custom Events** para comunicación entre componentes
+- **LocalStorage** para persistencia de datos
+- **Context API** para gestión de estado de autenticación
 
-### Gestión de Alertas
-- **Alertas Leves**: Lesiones menores que requieren atención básica
-- **Alertas Moderadas**: Lesiones que requieren atención médica especializada
-- **Alertas Graves**: Emergencias críticas con activación de sirena y movilización completa
+## 🏥 Información Médica
 
-### Registro de Incidentes
-- Formulario completo para registro de incidentes médicos
-- Seguimiento del estado de cada incidente
-- Historial persistente de todos los eventos
+### Niveles de Alerta
+- **🟢 Leve**: Lesiones menores, atención básica
+- **🟡 Moderada**: Lesiones que requieren atención especializada
+- **🔴 Grave**: Emergencias críticas con movilización completa
 
-### Estadísticas y Análisis
-- Gráficos de distribución por deporte y tipo de lesión
-- Tendencias mensuales de incidentes
-- Indicadores de seguridad (días sin lesiones)
-- Análisis de patrones de lesiones
-
-## Flujo de Trabajo
-
-1. **Detección de Emergencia**: Se identifica una situación de emergencia en el evento deportivo
-
-2. **Activación de Alerta**: El coordinador activa una alerta desde PanelBrigadaEmerg.html especificando:
-   - Nivel de gravedad (leve, moderada, grave)
-   - Ubicación específica
-   - Tipo de emergencia
-   - Club/cancha afectada
-
-3. **Recepción Automática**: PanelEnfermeria.html recibe la alerta automáticamente y muestra:
-   - Información completa de la emergencia
-   - Temporizador de respuesta
-   - Botones de acción (confirmar, llegada, apoyo, completar)
-
-4. **Respuesta Coordinada**: El personal médico:
-   - Confirma recepción de la alerta
-   - Se dirige a la ubicación
-   - Marca llegada al lugar
-   - Solicita apoyo si es necesario
-   - Completa la atención
-
-5. **Registro y Estadísticas**: 
-   - Se registra el incidente completo
-   - Se actualiza el historial
-   - Se generan estadísticas automáticamente
-   - PanelLiga.html refleja los nuevos datos
-
-## Tecnologías Utilizadas
-
-- **HTML5**: Estructura de las páginas
-- **CSS3**: Diseño responsivo y moderno con variables CSS
-- **JavaScript ES6+**: Lógica de aplicación y comunicación
-- **Chart.js**: Gráficos y visualizaciones
-- **Font Awesome**: Iconografía
-- **LocalStorage API**: Persistencia de datos
-- **Custom Events**: Comunicación entre paneles
-
-## Instalación y Uso
-
-1. **Clonar o descargar** todos los archivos del proyecto
-2. **Abrir los paneles** en pestañas separadas del navegador:
-   - `PanelBrigadaEmerg.html` - Para coordinadores de emergencia
-   - `PanelEnfermeria.html` - Para personal médico
-   - `PanelLiga.html` - Para gestión y estadísticas
-3. **Probar la comunicación** activando una alerta en el Panel de Brigada
-
-## Estructura de Archivos
-
-```
-proyecto/
-├── PanelBrigadaEmerg.html    # Panel de activación de alertas
-├── PanelEnfermeria.html      # Panel de recepción y atención
-├── PanelLiga.html            # Panel de estadísticas y gestión
-├── shared.js                 # Módulo de comunicación compartida
-└── README.md                 # Documentación del proyecto
-```
-
-## Funcionalidades Avanzadas
-
-### Sistema de Notificaciones
-- Notificaciones visuales en tiempo real
-- Diferentes tipos de notificaciones (éxito, advertencia, error, información)
-- Desaparición automática después de 4 segundos
-x  
-### Gestión de Estados
-- Estado del brigadista sincronizado entre paneles
-- Estados de equipos de emergencia
-- Seguimiento de alertas activas
-
-### Validación y Manejo de Errores
-- Validación de datos de entrada
-- Manejo robusto de errores de localStorage
-- Mensajes de error informativos para el usuario
-
-### Responsive Design
-- Diseño adaptable a diferentes tamaños de pantalla
-- Optimizado para tablets y dispositivos móviles
-- Interfaz intuitiva y accesible
-
-## Datos de Clubes Participantes
-
-El sistema incluye información de los siguientes clubes:
-- **Escuela Los Halcones** (Sub-15) - Cancha 1
-- **Escuela Águilas Doradas** (Sub-17) - Cancha 2  
-- **Escuela Tormenta FC** (Sub-13) - Cancha 3
-- **Escuela Estrellas Rojas** (Sub-19) - Cancha 4
-
-## Protocolo de Emergencias
-
-El sistema implementa un protocolo de 9 pasos:
+### Protocolo de 9 Pasos
 1. Identificación de Emergencia
 2. Activación de Protocolos
 3. Evaluación Inicial y Primeros Auxilios
@@ -156,17 +156,30 @@ El sistema implementa un protocolo de 9 pasos:
 8. Seguimiento y Rehabilitación
 9. Cierre del Incidente
 
-## Soporte y Contacto
+## 🏢 Información de la Empresa
 
 **Ergo SaniTas SpA**
-- Ubicación: San Bernardo, Santiago, Chile
-- Teléfono: +56 9 6114 9975
-- Web: www.ergosanitas.com
+- 📍 San Bernardo, Santiago, Chile
+- 📞 +56 9 6114 9975
+- 🌐 www.ergosanitas.com
 
-## Licencia
+## 📄 Licencia
 
 © 2025 Ergo SaniTas SpA - Todos los derechos reservados
 
 ---
 
 *Sistema desarrollado para la gestión profesional de emergencias médicas en eventos deportivos, garantizando respuesta rápida y coordinada para la seguridad de los deportistas.*
+
+## 🤝 Contribución
+
+Para contribuir al proyecto:
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -m 'Agregar nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📞 Soporte
+
+Para soporte técnico o consultas sobre el sistema, contacta a través de los canales oficiales de Ergo SaniTas SpA.
